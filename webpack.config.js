@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: "./src/index.js",
@@ -7,23 +8,53 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(js|jsx)$/,
+                test: /\.(js|jsx|ts|tsx)$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: "babel-loader",
-                options: { presets: ["@babel/env"] }
+                options: { presets: ["@babel/env", "@babel/preset-react", "@babel/preset-typescript"] }
             },
             {
-                test: /\.css$/,
-                use: ["style-loader", "css-loader"]
-            }
+                test: /\.module\.scss$/,
+                use: [MiniCssExtractPlugin.loader, 
+                {
+                    loader: "css-loader",
+                    options: 
+                    {
+                        modules: {
+            localIdentName: "[name]__[local]___[hash:base64:5]",
+        }
+                    }
+                }, "postcss-loader", "sass-loader"]
+            },
+            {
+            test: /^((?!\.module).)*\.scss$/,
+            use: [
+                MiniCssExtractPlugin.loader,
+                {
+                    loader: "css-loader",
+                    options: 
+                    {
+                        modules: true
+                    }
+                },
+                "postcss-loader",
+                "sass-loader"
+            ]
+        }
         ]
     },
-    resolve: { extensions: ["*", ".js", ".jsx"] },
+    resolve: { extensions: [".*", ".js", ".jsx", ".ts", ".tsx"] },
     output: {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/dist/",   
     filename: "bundle.js"
 },
+    plugins: [
+  new MiniCssExtractPlugin({
+    filename: 'styles.css',
+    chunkFilename: '[id].css',
+  }),
+],
 devServer: {
     static: {
         directory: path.join(__dirname, "public"),

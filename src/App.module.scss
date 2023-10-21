@@ -1,0 +1,20 @@
+$border-width: 15px;
+$margin-width: 20px;
+$border-color: black;
+$background-color: white;
+
+.App {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    height: calc(100vh - #{2 * $margin-width + 2 * $border-width});
+    width: calc(100vw - #{2 * $margin-width + 2 * $border-width});
+    margin: $margin-width;
+    background-color: $background-color;
+    padding: 10px;
+    border: $border-width solid $border-color;
+    position: fixed;
+}
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
