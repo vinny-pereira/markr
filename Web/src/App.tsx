@@ -5,7 +5,7 @@ import styles from "./App.module.scss";
 class App extends Component{
     render(){
         return(
-             <div className={styles.App}>
+             <div className={`${styles.App} rounded-xl`}>
                  <Home />
              </div>
         )
